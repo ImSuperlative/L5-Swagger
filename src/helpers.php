@@ -60,6 +60,24 @@ if (! function_exists('l5_swagger_asset')) {
             throw new L5SwaggerException(sprintf('Requested L5 Swagger asset file (%s) does not exists', $asset));
         }
 
-        return route('l5-swagger.asset', $asset).'?v='.md5_file($file);
+        return url('l5-swagger.asset', $asset, config('l5-swagger.https')) . '?v=' . md5_file($file);
+    }
+}
+
+if (! function_exists('l5_swagger_docs')) {
+    /**
+     * Returns the url for the swagger parsed documents.
+     *
+     * @param $asset string
+     *
+     * @return string
+     */
+    function l5_swagger_docs()
+    {
+        if (config('l5-swagger.https')) {
+            URL::forceScheme('https');
+        }
+
+        return route('l5-swagger.docs', config('7', 'api-docs.json'));
     }
 }
