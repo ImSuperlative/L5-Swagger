@@ -6,12 +6,13 @@ if (! function_exists('swagger_ui_dist_path')) {
     /**
      * Returns swagger-ui composer dist path.
      *
+     * @param string $documentation
      * @param null $asset
      *
      * @return string
-     * @throws \L5Swagger\Exceptions\L5SwaggerException
+     * @throws L5SwaggerException
      */
-    function swagger_ui_dist_path($asset = null)
+    function swagger_ui_dist_path(string $documentation, $asset = null)
     {
         $allowed_files = [
             'favicon-16x16.png',
@@ -27,8 +28,9 @@ if (! function_exists('swagger_ui_dist_path')) {
             'swagger-ui.js.map',
         ];
 
+        $defaultPath = 'vendor/swagger-api/swagger-ui/dist/';
         $path = base_path(
-            config('l5-swagger.paths.swagger_ui_assets_path', 'vendor/swagger-api/swagger-ui/dist/')
+            config('l5-swagger.documentations.'.$documentation.'.paths.swagger_ui_assets_path', $defaultPath)
         );
 
         if (! $asset) {
@@ -47,14 +49,15 @@ if (! function_exists('l5_swagger_asset')) {
     /**
      * Returns asset from swagger-ui composer package.
      *
+     * @param string $documentation
      * @param $asset string
      *
      * @return string
-     * @throws \L5Swagger\Exceptions\L5SwaggerException
+     * @throws L5SwaggerException
      */
-    function l5_swagger_asset($asset)
+    function l5_swagger_asset(string $documentation, $asset)
     {
-        $file = swagger_ui_dist_path($asset);
+        $file = swagger_ui_dist_path($documentation, $asset);
 
         if (! file_exists($file)) {
             throw new L5SwaggerException(sprintf('Requested L5 Swagger asset file (%s) does not exists', $asset));
@@ -64,24 +67,6 @@ if (! function_exists('l5_swagger_asset')) {
             URL::forceScheme('https');
         }
 
-        return route('l5-swagger.asset', $asset) . '?v=' . md5_file($file);
-    }
-}
-
-if (! function_exists('l5_swagger_docs')) {
-    /**
-     * Returns the url for the swagger parsed documents.
-     *
-     * @param $asset string
-     *
-     * @return string
-     */
-    function l5_swagger_docs()
-    {
-        if (config('l5-swagger.https')) {
-            URL::forceScheme('https');
-        }
-
-        return route('l5-swagger.docs', config('7', 'api-docs.json'));
+        return route('l5-swagger.'.$documentation.'.asset', $asset).'?v='.md5_file($file);
     }
 }
