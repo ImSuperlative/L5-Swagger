@@ -169,8 +169,6 @@ return [
         */
         'proxy' => false,
 
-        'https' => env('L5_SWAGGER_HTTPS', false),
-
         /*
          * Configs plugin allows to fetch external configs instead of passing them to SwaggerUIBundle.
          * See more at: https://github.com/swagger-api/swagger-ui#configs-plugin
@@ -197,4 +195,6 @@ return [
         // 'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'http://my-default-host.com'),
         // ],
     ],
+
+    'https' => env('L5_SWAGGER_HTTPS', false),
 ];

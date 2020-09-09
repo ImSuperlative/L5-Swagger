@@ -69,4 +69,22 @@ if (! function_exists('l5_swagger_asset')) {
 
         return route('l5-swagger.'.$documentation.'.asset', $asset).'?v='.md5_file($file);
     }
+
+    if (! function_exists('l5_swagger_docs')) {
+        /**
+         * Returns the url for the swagger parsed documents.
+         *
+         * @param $asset string
+         *
+         * @return string
+         */
+        function l5_swagger_docs($url, $config)
+        {
+            if (config('l5-swagger.https')) {
+                URL::forceScheme('https');
+            }
+
+            return route($url, $config);
+        }
+    }
 }

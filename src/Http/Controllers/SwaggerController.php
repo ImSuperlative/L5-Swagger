@@ -105,7 +105,7 @@ class SwaggerController extends BaseController
             Request::setTrustedProxies($proxy, Request::HEADER_X_FORWARDED_ALL);
         }
 
-        $urlToDocs = route('l5-swagger.'.$documentation.'.docs', $config['paths']['docs_json'] ?? 'api-docs.json');
+        $urlToDocs = l5_swagger_docs('l5-swagger.'.$documentation.'.docs', $config['paths']['docs_json'] ?? 'api-docs.json');
 
         // Need the / at the end to avoid CORS errors on Homestead systems.
         return ResponseFacade::make(
